@@ -1,0 +1,66 @@
+logging:
+  level:
+    io.zenwave360.example: DEBUG
+    org.hibernate.SQL: DEBUG
+#    org.springframework.cloud.stream: DEBUG
+#    org.apache.kafka: DEBUG
+spring:
+  security:
+    user:
+      name: user
+      password: password
+      roles: USER
+  jpa.hibernate.ddl-auto: update
+#  jpa.defer-datasource-initialization: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mariadb://localhost:3306/zenwave-example?useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  kafka:
+    bootstrap-servers: localhost:9092
+  cloud:
+    stream:
+      function:
+        definition: do-customer-request;on-customer-event;on-customer-order-event
+      bindings:
+        do-customer-request-in-0:
+          group: zenwave360-example
+          destination: customer.requests
+          contentType: application/json
+        on-customer-event-out-0:
+          group: zenwave360-example
+          destination: customer.events
+          content-type: application/json
+        on-customer-order-event-out-0:
+          group: zenwave360-example
+          destination: customer-order.events
+          content-type: application/json
+        on-customer-event-in-0:
+          group: zenwave360-example
+          destination: customer.events
+          content-type: application/json
+        on-customer-order-event-in-0:
+          group: zenwave360-example
+          destination: customer-order.events
+          content-type: application/json
+      kafka:
+        bindings:
+          on-customer-event-out-0:
+            producer:
+              configuration:
+                key.serializer: org.apache.kafka.common.serialization.LongSerializer
+#                schema.registry.url: http://localhost:8081
+          on-customer-order-event-out-0:
+            producer:
+              configuration:
+                key.serializer: org.apache.kafka.common.serialization.LongSerializer
+#                schema.registry.url: http://localhost:8081
