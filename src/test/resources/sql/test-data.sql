@@ -1,4 +1,3 @@
-delete from customer_order_ordered_item;
 delete from customer_order;
 delete from ordered_item;
 delete from payment_details;
