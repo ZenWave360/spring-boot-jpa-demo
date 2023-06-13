@@ -1,15 +1,15 @@
 # ZenWave Example
 
 <!-- TOC -->
-* [ZenWave Example](#zenwave-example)
-* [Install ZenWave SDK](#install-zenwave-sdk)
-* [Starting Docker Infrastructure](#starting-docker-infrastructure)
-* [Generate Backend Application](#generate-backend-application)
-* [JDL To OpenAPI](#jdl-to-openapi)
-* [SpringMVC Controllers](#springmvc-controllers)
-* [Spring WebTestClient](#spring-webtestclient)
-* [JDL To AsyncAPI](#jdl-to-asyncapi)
-* [ZenWave Maven Plugin for AsyncAPI](#zenwave-maven-plugin-for-asyncapi)
+- [ZenWave Example](#zenwave-example)
+- [Install ZenWave SDK](#install-zenwave-sdk)
+- [Starting Docker Infrastructure](#starting-docker-infrastructure)
+- [Generate Backend Application](#generate-backend-application)
+- [JDL To OpenAPI](#jdl-to-openapi)
+- [SpringMVC Controllers](#springmvc-controllers)
+- [Spring WebTestClient](#spring-webtestclient)
+- [JDL To AsyncAPI](#jdl-to-asyncapi)
+- [ZenWave Maven Plugin for AsyncAPI](#zenwave-maven-plugin-for-asyncapi)
 <!-- TOC -->
 
 # Install ZenWave SDK
