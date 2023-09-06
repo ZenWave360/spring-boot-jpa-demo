@@ -1,0 +1,241 @@
+openapi: 3.0.1
+info:
+  title: Zenwave 360 Generated API
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/
+tags:
+  - name: "Default"
+  - name: "Customer"
+
+paths:
+  /customers:
+    get:
+      summary: Find Customers
+      operationId: listCustomers
+      tags: [Customer]
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/sort'
+      responses:
+        "200":
+          description: Customers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerPaginated"
+    post:
+      summary: Create Customer
+      operationId: createCustomer
+      tags: [Customer]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      responses:
+        "201":
+          description: Customer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+
+  /customers/{id}:
+    parameters:
+    - name: id
+      in: path
+      description: Customer id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    get:
+      summary: Get Customer by id
+      operationId: getCustomer
+      tags: [Customer]
+      responses:
+        "200":
+          description: Customer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    put:
+      summary: Update Customer
+      operationId: updateCustomer
+      tags: [Customer]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      responses:
+        "200":
+          description: Customer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+    delete:
+      summary: Delete Customer
+      operationId: deleteCustomer
+      tags: [Customer]
+      responses:
+        "204":
+          description: Customer deleted
+  
+
+components:
+  schemas:
+    Customer:
+      type: "object"
+      x-business-entity: "Customer"
+      required:
+      - "username"
+      - "password"
+      - "email"
+      - "firstName"
+      - "lastName"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        version:
+          type: "integer"
+        username:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        password:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        email:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        firstName:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        lastName:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        addresses:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Address"
+    CustomerPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "Customer"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/Customer"
+    Address:
+      type: "object"
+      x-business-entity: "Address"
+      required:
+      - "street"
+      - "city"
+      - "country"
+      - "zipCode"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        version:
+          type: "integer"
+        street:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        city:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        country:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+        zipCode:
+          type: "string"
+          minLength: 3
+          maxLength: 250
+    AddressPaginated:
+      allOf:
+      - $ref: "#/components/schemas/Page"
+      - x-business-entity-paginated: "Address"
+      - properties:
+          content:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/Address"
+
+    Page:
+      type: object
+      required:
+        - "content"
+        - "totalElements"
+        - "totalPages"
+        - "size"
+        - "number"
+      properties:
+        number:
+          type: integer
+          minimum: 0
+        numberOfElements:
+          type: integer
+          minimum: 0
+        size:
+          type: integer
+          minimum: 0
+          maximum: 200
+          multipleOf: 25
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+
+  parameters:
+    page:
+      name: page
+      in: query
+      description: The number of results page
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: The number of results in a single page
+      schema:
+        type: integer
+        format: int32
+        default: 20
+    sort:
+      name: sort
+      in: query
+      description: The number of results page
+      schema:
+        type: array
+        items:
+          type: string
+
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+    bearerAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+security:
+  - basicAuth: []  # <-- use the same name here
+  - bearerAuth: []  # <-- use the same name here
